@@ -1,42 +1,28 @@
 package com.benbenlaw.flightblocks.block.entity;
 
 import com.benbenlaw.flightblocks.config.StartupConfig;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.extensions.IPlayerExtension;
-import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class FlightBlockEntity extends BlockEntity {
 
-    private static final int RANGE = StartupConfig.flightBlockRange.get();
+    public static final int RANGE = StartupConfig.flightBlockRange.get();
     private final Set<ServerPlayer> enabledPlayers = new HashSet<>();
-    private static final Set<FlightBlockEntity> ACTIVE_BLOCKS = new HashSet<>();
+    public static final Set<FlightBlockEntity> ACTIVE_BLOCKS = new HashSet<>();
 
     public FlightBlockEntity(BlockPos pos, BlockState state) {
         super(FlightBlockEntities.FLIGHT_BLOCK_ENTITY.get(), pos, state);
@@ -46,8 +32,6 @@ public class FlightBlockEntity extends BlockEntity {
     public void tick() {
         Level level = this.getLevel();
         assert level != null;
-        //int activeBlocks = ACTIVE_BLOCKS.size();
-        //System.out.println(activeBlocks);
 
         if (!level.isClientSide()) {
             ServerLevel serverLevel = (ServerLevel) level;
@@ -86,7 +70,7 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
 
-    private void enableFlight(ServerPlayer player) {
+    public void enableFlight(Player player) {
         if (!player.isCreative()) {
             if (!player.getAbilities().mayfly) {
                 player.getAbilities().mayfly = true;
@@ -112,11 +96,17 @@ public class FlightBlockEntity extends BlockEntity {
     @Override
     public void setRemoved() {
         super.setRemoved();
+
+        // For each player currently enabled by this block
         for (ServerPlayer player : enabledPlayers) {
-            disableFlight(player);
+            // Check if the player is still in range of any other active flight block
+            if (!isPlayerInRangeOfAnyBlock(player)) {
+                disableFlight(player);
+            }
         }
         ACTIVE_BLOCKS.remove(this);
     }
+
 
     public InteractionResult onRightClick(ServerPlayer player) {
         Level level = this.getLevel();
