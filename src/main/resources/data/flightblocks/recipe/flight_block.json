@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": {
+      "tag": "c:ingots/iron"
+    },
+    "F": {
+      "item": "minecraft:firework_rocket"
+    },
+    "I": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "pattern": [
+    "IFI",
+    "RRR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "flightblocks:flight_block"
+  }
+}

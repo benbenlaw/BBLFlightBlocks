@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "flightblocks:block/flight_block"
+    }
+  }
+}
