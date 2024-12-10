@@ -1,5 +1,13 @@
 Changelog BBL Flight Blocks
 
+1.0.3
+Reworked the flight system into a event not through the block entity
+Fixes issues between the flight block and the player when crossing dimensions
+
+1.0.2
+Right clicking the flight block will now show a box of the range not render a "wall" of particles
+Particle changes depending on the time of day to make it easier to see
+
 1.0.1
 Added auto mod uploading to curse forge and modrinth
 After respawning the player will now be effected by the flight block if within the range of the block

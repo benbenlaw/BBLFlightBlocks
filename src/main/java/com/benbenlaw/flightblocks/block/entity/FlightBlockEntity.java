@@ -17,7 +17,6 @@ import net.minecraft.world.phys.AABB;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 public class FlightBlockEntity extends BlockEntity {
 
     public static final int RANGE = StartupConfig.flightBlockRange.get();
@@ -30,83 +29,13 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
     public void tick() {
-        Level level = this.getLevel();
-        assert level != null;
-
-        if (!level.isClientSide()) {
-            ServerLevel serverLevel = (ServerLevel) level;
-            AABB aabb = new AABB(this.worldPosition).inflate(RANGE);
-            List<ServerPlayer> playersInRange = serverLevel.getEntitiesOfClass(ServerPlayer.class, aabb);
-
-            for (ServerPlayer player : playersInRange) {
-                if (!enabledPlayers.contains(player)) {
-                    enableFlight(player);
-                    enabledPlayers.add(player);
-                }
-            }
-
-            enabledPlayers.removeIf(player -> {
-                if (!playersInRange.contains(player)) {
-                    if (!isPlayerInRangeOfAnyBlock(player)) {
-                        disableFlight(player);
-                    }
-                    return true;
-                }
-                return false;
-            });
-        }
-    }
-
-    private boolean isPlayerInRangeOfAnyBlock(ServerPlayer player) {
-        for (FlightBlockEntity blockEntity : ACTIVE_BLOCKS) {
-            if (blockEntity != this) {
-                AABB blockRange = new AABB(blockEntity.getBlockPos()).inflate(RANGE);
-                if (blockRange.contains(player.position())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    public void enableFlight(Player player) {
-        if (!player.isCreative()) {
-            if (!player.getAbilities().mayfly) {
-                player.getAbilities().mayfly = true;
-                player.onUpdateAbilities();
-                player.sendSystemMessage(Component.translatable(
-                        "block.flightblocks.flight_block.enabled_flight").withStyle(ChatFormatting.GREEN));
-            }
-        }
-    }
-
-    private void disableFlight(ServerPlayer player) {
-        if (!player.isCreative()) {
-            if (player.getAbilities().mayfly) {
-                player.getAbilities().mayfly = false;
-                player.getAbilities().flying = false;
-                player.onUpdateAbilities();
-                player.sendSystemMessage(Component.translatable(
-                        "block.flightblocks.flight_block.disabled_flight").withStyle(ChatFormatting.RED));
-            }
-        }
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-
-        // For each player currently enabled by this block
-        for (ServerPlayer player : enabledPlayers) {
-            // Check if the player is still in range of any other active flight block
-            if (!isPlayerInRangeOfAnyBlock(player)) {
-                disableFlight(player);
-            }
-        }
         ACTIVE_BLOCKS.remove(this);
     }
-
 
     public InteractionResult onRightClick(ServerPlayer player) {
         Level level = this.getLevel();
