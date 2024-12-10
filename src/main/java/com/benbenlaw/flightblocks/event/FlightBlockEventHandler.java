@@ -69,7 +69,7 @@ public class FlightBlockEventHandler {
         }
 
         private static void enableFlight(Player player) {
-            if (!player.isCreative() && !player.getAbilities().mayfly) {
+            if (!player.isCreative() && !player.isSpectator() && !player.getAbilities().mayfly) {
                 player.getAbilities().mayfly = true;
                 player.onUpdateAbilities();
                 player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.enabled_flight").withStyle(ChatFormatting.GREEN));
@@ -78,7 +78,7 @@ public class FlightBlockEventHandler {
         }
 
         private static void disableFlight(Player player) {
-            if (!player.isCreative() && player.getAbilities().mayfly) {
+            if (!player.isCreative() && !player.isSpectator() && player.getAbilities().mayfly) {
                 player.getAbilities().mayfly = false;
                 player.getAbilities().flying = false;
                 player.onUpdateAbilities();
