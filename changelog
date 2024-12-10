@@ -1,5 +1,8 @@
 Changelog BBL Flight Blocks
 
+1.0.4
+Spectator players now longer have there flight disabled when not around a flight block
+
 1.0.3
 Reworked the flight system into a event not through the block entity
 Fixes issues between the flight block and the player when crossing dimensions
