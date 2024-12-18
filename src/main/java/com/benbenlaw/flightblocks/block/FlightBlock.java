@@ -79,9 +79,9 @@ public class FlightBlock extends BaseEntityBlock {
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
 
         if (Screen.hasShiftDown()) {
-            list.add(Component.translatable("tooltips.flight_block.shift.held").append(String.valueOf(StartupConfig.flightBlockRange.get())).withStyle(ChatFormatting.BLUE));
+            list.add(Component.translatable("tooltips.flight_block.shift.held").append(String.valueOf(StartupConfig.flightBlockRange.get())).withStyle(ChatFormatting.YELLOW));
         } else {
-            list.add(Component.translatable("tooltips.item.shift.not_held").withStyle(ChatFormatting.BLUE));
+            list.add(Component.translatable("tooltips.item.shift.not_held").withStyle(ChatFormatting.YELLOW));
         }
     }
 

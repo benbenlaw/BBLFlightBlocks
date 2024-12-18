@@ -70,6 +70,26 @@ dependencies {
     compileOnly "curse.maven:bbl-core-1135181:5973478"
     runtimeOnly "curse.maven:bbl-core-1135181:5973478"
 
+    //FTB Essentials
+    compileOnly "curse.maven:ftb-essentials-410811:5631477"
+    runtimeOnly "curse.maven:ftb-essentials-410811:5631477"
+
+    //Architectury
+    compileOnly "curse.maven:architectury-api-419699:5786327"
+    runtimeOnly "curse.maven:architectury-api-419699:5786327"
+
+    //FTB Library
+    compileOnly "curse.maven:ftb-library-forge-404465:5893689"
+    runtimeOnly "curse.maven:ftb-library-forge-404465:5893689"
+
+    //Modular Angel Ring
+    compileOnly "curse.maven:modular-angel-ring-1037481:5893860"
+    runtimeOnly "curse.maven:modular-angel-ring-1037481:5893860"
+
+    //Curios Continuation
+    compileOnly "curse.maven:curios-continuation-1037991:5888964"
+    runtimeOnly "curse.maven:curios-continuation-1037991:5888964"
+
     //JEI
     compileOnly "curse.maven:jei-238222:5846880"
     runtimeOnly "curse.maven:jei-238222:5846880"

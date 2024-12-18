@@ -1,5 +1,11 @@
 Changelog BBL Flight Blocks
 
+1.0.5
+Fixed conflict with FTB Essentials /fly command
+FLight blocks that enable a certain player the player now contain the flight block tag to prevent other means of flight being enabled/ disabled
+    when leaving a flight block range
+Modular flight rings now longer disable flight when the player is not around a flight block
+
 1.0.4
 Spectator players now longer have there flight disabled when not around a flight block
 
