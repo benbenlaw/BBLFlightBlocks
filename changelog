@@ -1,5 +1,10 @@
 Changelog BBL Flight Blocks
 
+//1.22 tiered flight blocks, effect blocks?
+
+1.0.6
+Updated to bbl core 1.2.29
+
 1.0.5
 Fixed conflict with FTB Essentials /fly command
 FLight blocks that enable a certain player the player now contain the flight block tag to prevent other means of flight being enabled/ disabled
