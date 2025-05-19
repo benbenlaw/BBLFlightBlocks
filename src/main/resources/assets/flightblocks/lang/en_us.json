@@ -6,5 +6,5 @@
   "block.flightblocks.flight_block.disabled_flight": "Flight Disabled!",
   "block.flightblocks.flight_block.range": "Range: ",
 
-  "tooltips.flight_block.shift.held": "Place in world to allow flight around the block! Range: "
+  "tooltips.flightblocks.flightblocks.shift.held": "Place in world to allow flight around the block! Range: "
 }

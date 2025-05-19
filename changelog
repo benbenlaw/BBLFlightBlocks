@@ -2,6 +2,11 @@ Changelog BBL Flight Blocks
 
 //1.22 tiered flight blocks, effect blocks?
 
+1.0.7
+Fixed flight block shift translations
+Tweaked rendering of the flight block area of effect to create a box shape
+Right clicking on the flight block no longer "places" a fake block on the client side
+
 1.0.6
 Updated to bbl core 1.2.29
 

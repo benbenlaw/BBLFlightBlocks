@@ -37,15 +37,65 @@ public class FlightBlockEntity extends BlockEntity {
         ACTIVE_BLOCKS.remove(this);
     }
 
-    public InteractionResult onRightClick(ServerPlayer player) {
+    public void onRightClick(ServerPlayer player) {
         Level level = this.getLevel();
         if (level != null && !level.isClientSide()) {
-            showFlightRange((ServerLevel) level, player);
+            showFlightRangeOutline((ServerLevel) level, player);
+            //showFlightRange((ServerLevel) level, player); //old
             player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.range").append(String.valueOf(RANGE)));
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.FAIL;
     }
+
+    private void showFlightRangeOutline(ServerLevel level, ServerPlayer player) {
+        AABB range = new AABB(this.worldPosition).inflate(RANGE, RANGE, RANGE);
+
+        int minX = (int) Math.floor(range.minX);
+        int minY = (int) Math.floor(range.minY);
+        int minZ = (int) Math.floor(range.minZ);
+        int maxX = (int) Math.ceil(range.maxX);
+        int maxY = (int) Math.ceil(range.maxY);
+        int maxZ = (int) Math.ceil(range.maxZ);
+
+        // Particle count density - adjust for performance/visuals
+        int step = 1;
+
+        // Along X edges (4 edges)
+        for (int x = minX; x <= maxX; x += step) {
+            spawnParticle(level, player, x + 0.5, minY + 0.5, minZ + 0.5);
+            spawnParticle(level, player, x + 0.5, minY + 0.5, maxZ + 0.5);
+            spawnParticle(level, player, x + 0.5, maxY + 0.5, minZ + 0.5);
+            spawnParticle(level, player, x + 0.5, maxY + 0.5, maxZ + 0.5);
+        }
+
+        // Along Y edges (4 edges)
+        for (int y = minY; y <= maxY; y += step) {
+            spawnParticle(level, player, minX + 0.5, y + 0.5, minZ + 0.5);
+            spawnParticle(level, player, minX + 0.5, y + 0.5, maxZ + 0.5);
+            spawnParticle(level, player, maxX + 0.5, y + 0.5, minZ + 0.5);
+            spawnParticle(level, player, maxX + 0.5, y + 0.5, maxZ + 0.5);
+        }
+
+        // Along Z edges (4 edges)
+        for (int z = minZ; z <= maxZ; z += step) {
+            spawnParticle(level, player, minX + 0.5, minY + 0.5, z + 0.5);
+            spawnParticle(level, player, minX + 0.5, maxY + 0.5, z + 0.5);
+            spawnParticle(level, player, maxX + 0.5, minY + 0.5, z + 0.5);
+            spawnParticle(level, player, maxX + 0.5, maxY + 0.5, z + 0.5);
+        }
+    }
+
+    private void spawnParticle(ServerLevel level, ServerPlayer player, double x, double y, double z) {
+        level.sendParticles(
+                player,
+                ParticleTypes.END_ROD,
+                true,
+                x, y, z,
+                1,
+                0.0, 0.0, 0.0,
+                0.0
+        );
+    }
+
 
     private void showFlightRange(ServerLevel level, ServerPlayer player) {
         AABB range = new AABB(this.worldPosition).inflate(RANGE, RANGE, RANGE);

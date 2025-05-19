@@ -60,10 +60,10 @@ public class FlightBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof FlightBlockEntity) {
-                return ((FlightBlockEntity) blockEntity).onRightClick((ServerPlayer) player);
+                ((FlightBlockEntity) blockEntity).onRightClick((ServerPlayer) player);
             }
         }
-        return super.useWithoutItem(state, level, pos, player, hitResult);
+        return InteractionResult.SUCCESS;
     }
 
     public RenderShape getRenderShape(BlockState pState) {
@@ -79,9 +79,9 @@ public class FlightBlock extends BaseEntityBlock {
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
 
         if (Screen.hasShiftDown()) {
-            list.add(Component.translatable("tooltips.flight_block.shift.held").append(String.valueOf(StartupConfig.flightBlockRange.get())).withStyle(ChatFormatting.YELLOW));
+            list.add(Component.translatable("tooltips.flightblocks.flightblocks.shift.held").append(String.valueOf(StartupConfig.flightBlockRange.get())).withStyle(ChatFormatting.YELLOW));
         } else {
-            list.add(Component.translatable("tooltips.item.shift.not_held").withStyle(ChatFormatting.YELLOW));
+            list.add(Component.translatable("tooltips.bblcore.shift").withStyle(ChatFormatting.YELLOW));
         }
     }
 
