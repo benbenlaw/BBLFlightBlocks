@@ -2,6 +2,12 @@ Changelog BBL Flight Blocks
 
 //1.22 tiered flight blocks, effect blocks?
 
+1.0.8
+Tweaked how the right click interaction works to show range, the range is now a toggle option for on and off
+The range particles now spawn and will not disappear until the flight block is right clicked again
+Area particles now show for all players in the range of the flight block when range is being shown
+The range particles will de-spawn when the player leaves the area of the flight block and re-appear when the player re-enters the area
+
 1.0.7
 Fixed flight block shift translations
 Tweaked rendering of the flight block area of effect to create a box shape

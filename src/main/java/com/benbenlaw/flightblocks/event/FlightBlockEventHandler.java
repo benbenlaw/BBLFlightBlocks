@@ -23,7 +23,7 @@ import java.util.Set;
 
 @EventBusSubscriber(modid = FlightBlocks.MOD_ID)
 public class FlightBlockEventHandler {
-    private static final Set<ServerPlayer> playersWithFlightEnabled = new HashSet<>();
+    public static final Set<ServerPlayer> playersWithFlightEnabled = new HashSet<>();
     private static final int RANGE = StartupConfig.flightBlockRange.get();; // Define your flight block range here
 
     @SubscribeEvent

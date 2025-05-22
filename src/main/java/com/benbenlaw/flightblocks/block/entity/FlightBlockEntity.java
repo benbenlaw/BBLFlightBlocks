@@ -3,7 +3,9 @@ package com.benbenlaw.flightblocks.block.entity;
 import com.benbenlaw.flightblocks.config.StartupConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,11 +19,15 @@ import net.minecraft.world.phys.AABB;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.benbenlaw.flightblocks.event.FlightBlockEventHandler.playersWithFlightEnabled;
+
 public class FlightBlockEntity extends BlockEntity {
 
     public static final int RANGE = StartupConfig.flightBlockRange.get();
     private final Set<ServerPlayer> enabledPlayers = new HashSet<>();
     public static final Set<FlightBlockEntity> ACTIVE_BLOCKS = new HashSet<>();
+    private boolean showRange = false;
 
     public FlightBlockEntity(BlockPos pos, BlockState state) {
         super(FlightBlockEntities.FLIGHT_BLOCK_ENTITY.get(), pos, state);
@@ -29,6 +35,15 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
     public void tick() {
+        assert level != null;
+        if (!level.isClientSide()) {
+            if (showRange) {
+                ServerLevel serverLevel = (ServerLevel) level;
+                for (ServerPlayer player : playersWithFlightEnabled) {
+                    showFlightRangeOutline(serverLevel, player);
+                }
+            }
+        }
     }
 
     @Override
@@ -38,11 +53,17 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
     public void onRightClick(ServerPlayer player) {
-        Level level = this.getLevel();
-        if (level != null && !level.isClientSide()) {
-            showFlightRangeOutline((ServerLevel) level, player);
-            //showFlightRange((ServerLevel) level, player); //old
-            player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.range").append(String.valueOf(RANGE)));
+
+        if (showRange) {
+            showRange = false;
+            Level level = this.getLevel();
+            if (level != null && !level.isClientSide()) {
+                //showFlightRange((ServerLevel) level, player); //old
+                showFlightRangeOutline((ServerLevel) level, player);
+            }
+        } else {
+            showRange = true;
+            player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.range", RANGE));
         }
     }
 
@@ -124,5 +145,17 @@ public class FlightBlockEntity extends BlockEntity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
+        compoundTag.putBoolean("showRange", showRange);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        showRange = compoundTag.getBoolean("showRange");
+        super.loadAdditional(compoundTag, provider);
     }
 }
