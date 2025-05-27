@@ -2,6 +2,12 @@ Changelog BBL Flight Blocks
 
 //1.22 tiered flight blocks, effect blocks?
 
+1.0.9
+Added Chinese translation thanks to HanlieChina on github
+Added Russian translation thanks to Ropyxa on discord
+Tweaked player tick event to trigger once per second instead of every tick
+Area particle are only sent to player ones every 2 seconds now instead of every tick
+
 1.0.8
 Tweaked how the right click interaction works to show range, the range is now a toggle option for on and off
 The range particles now spawn and will not disappear until the flight block is right clicked again

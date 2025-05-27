@@ -39,8 +39,11 @@ public class FlightBlockEntity extends BlockEntity {
         if (!level.isClientSide()) {
             if (showRange) {
                 ServerLevel serverLevel = (ServerLevel) level;
-                for (ServerPlayer player : playersWithFlightEnabled) {
-                    showFlightRangeOutline(serverLevel, player);
+
+                if (level.getGameTime() % 40 == 0) {
+                    for (ServerPlayer player : playersWithFlightEnabled) {
+                        showFlightRangeOutline(serverLevel, player);
+                    }
                 }
             }
         }

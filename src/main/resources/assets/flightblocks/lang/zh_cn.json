@@ -6,5 +6,5 @@
   "block.flightblocks.flight_block.disabled_flight": "飞行已禁用！",
   "block.flightblocks.flight_block.range": "范围：",
 
-  "tooltips.flight_block.shift.held": "放置在世界中，可在方块周围启用飞行！范围："
+  "tooltips.flightblocks.flightblocks.shift.held": "放置在世界中，可在方块周围启用飞行！范围："
 }

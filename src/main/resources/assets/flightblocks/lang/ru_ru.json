@@ -1,0 +1,11 @@
+{
+	"itemGroup.flightblocks": "Блоки полёта",
+	"block.flightblocks.flight_block": "Блок полёта",
+
+	"block.flightblocks.flight_block.enabled_flight": "Полёт включён!",
+	"block.flightblocks.flight_block.disabled_flight": "Полёт отключён!",
+	"block.flightblocks.flight_block.range": "Радиус полёта: ",
+
+	"tooltips.item.shift.not_held": "Удерживайте SHIFT для большей информации",
+	"tooltips.flight_block.shift.held": "Разместите в мире для получинения возможности полёта вокруг блока!\nРадиус полёта: "
+}

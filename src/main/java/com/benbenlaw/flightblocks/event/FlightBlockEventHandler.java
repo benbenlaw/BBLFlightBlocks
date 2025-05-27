@@ -34,10 +34,13 @@ public class FlightBlockEventHandler {
         // Enable flight if player is within range of any flight block
         if (!player.level().isClientSide()) {
             ServerLevel level = (ServerLevel) player.level();
-            if (isPlayerNearFlightBlock(player, level)) {
-                enableFlight(player);
-            } else {
-                disableFlight(player);
+
+            if (level.getGameTime() % 20 == 0) { // Check every second
+                if (isPlayerNearFlightBlock(player, level)) {
+                    enableFlight(player);
+                } else {
+                    disableFlight(player);
+                }
             }
         }
     }
