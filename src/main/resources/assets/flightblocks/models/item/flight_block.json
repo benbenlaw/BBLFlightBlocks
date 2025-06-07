@@ -1,3 +1,6 @@
 {
-  "parent": "flightblocks:block/flight_block"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "flightblocks:block/flight_block"
+  }
 }

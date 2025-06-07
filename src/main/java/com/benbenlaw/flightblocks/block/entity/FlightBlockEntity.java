@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -109,15 +110,18 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
     private void spawnParticle(ServerLevel level, ServerPlayer player, double x, double y, double z) {
-        level.sendParticles(
-                player,
+        ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(
                 ParticleTypes.END_ROD,
                 true,
-                x, y, z,
+                true,
+                x + 0.5, y + 0.5, z + 0.5,
                 1,
-                0.0, 0.0, 0.0,
-                0.0
+                0.0f, 0.0f, 0.0f,
+                1
         );
+
+        player.connection.send(packet);
+
     }
 
 
@@ -135,15 +139,19 @@ public class FlightBlockEntity extends BlockEntity {
             for (double y = minY; y < maxY; y++) {
                 for (double z = minZ; z < maxZ; z++) {
                     if (x == minX || x == maxX - 1 || y == minY || y == maxY - 1 || z == minZ || z == maxZ - 1) {
-                        level.sendParticles(
-                                player,
+
+                        ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(
                                 ParticleTypes.END_ROD,
+                                true,
                                 true,
                                 x + 0.5, y + 0.5, z + 0.5,
                                 1,
-                                0.0, 0.0, 0.0,
-                                0.0
+                                0.0f, 0.0f, 0.0f,
+                                1
                         );
+
+                        player.connection.send(packet);
+
                     }
                 }
             }
@@ -158,7 +166,7 @@ public class FlightBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        showRange = compoundTag.getBoolean("showRange");
+        showRange = compoundTag.getBooleanOr("showRange", false);
         super.loadAdditional(compoundTag, provider);
     }
 }

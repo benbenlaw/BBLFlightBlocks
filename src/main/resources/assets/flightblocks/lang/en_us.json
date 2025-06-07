@@ -1,6 +1,6 @@
 {
   "itemGroup.flightblocks": "Flight Blocks",
-  "block.flightblocks.flight_block": "Flight Block",
+  "item.flightblocks.flight_block": "Flight Block",
 
   "block.flightblocks.flight_block.enabled_flight": "Flight Enabled!",
   "block.flightblocks.flight_block.disabled_flight": "Flight Disabled!",

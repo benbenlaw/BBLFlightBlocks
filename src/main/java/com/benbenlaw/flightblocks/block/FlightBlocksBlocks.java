@@ -18,25 +18,9 @@ import java.util.function.Supplier;
 public class FlightBlocksBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(FlightBlocks.MOD_ID);
-    public static final DeferredBlock<Block> FLIGHT_BLOCK = registerBlock("flight_block",
-            () -> new FlightBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_ANDESITE)));
-
-    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn);
-        return toReturn;
-    }
-
-    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        FlightBlocksItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties()));
-
-    }
-
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-    }
 
 
+    public static final DeferredBlock<Block> FLIGHT_BLOCK = BLOCKS.registerBlock("flight_block",
+            FlightBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_ANDESITE));
 
 }

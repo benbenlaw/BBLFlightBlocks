@@ -5,7 +5,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id 'net.neoforged.moddev' version '2.0.78'
     id 'net.darkhax.curseforgegradle' version '1.1.24'
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -31,28 +31,41 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
+neoForge {
+    version = project.neo_version
 
-        modSource project.sourceSets.main
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    runs {
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperty 'forge.logging.console.level', 'debug'
+        }
+
+        client {
+            client()
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            programArgument '--nogui'
+        }
+
+        serverData {
+            serverData()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
     }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    mods {
+        bblcore {
+            sourceSet sourceSets.main
+        }
     }
 }
 
@@ -67,32 +80,12 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
     //BBL Core
-    compileOnly "curse.maven:bbl-core-1135181:6486837"
-    runtimeOnly "curse.maven:bbl-core-1135181:6486837"
-
-    //FTB Essentials
-    compileOnly "curse.maven:ftb-essentials-410811:5631477"
-    runtimeOnly "curse.maven:ftb-essentials-410811:5631477"
-
-    //Architectury
-    compileOnly "curse.maven:architectury-api-419699:5786327"
-    runtimeOnly "curse.maven:architectury-api-419699:5786327"
-
-    //FTB Library
-    compileOnly "curse.maven:ftb-library-forge-404465:5893689"
-    runtimeOnly "curse.maven:ftb-library-forge-404465:5893689"
-
-    //Modular Angel Ring
-    compileOnly "curse.maven:modular-angel-ring-1037481:5893860"
-    runtimeOnly "curse.maven:modular-angel-ring-1037481:5893860"
-
-    //Curios Continuation
-    compileOnly "curse.maven:curios-continuation-1037991:5888964"
-    runtimeOnly "curse.maven:curios-continuation-1037991:5888964"
+    compileOnly "curse.maven:bbl-core-1135181:6621698"
+    runtimeOnly "curse.maven:bbl-core-1135181:6621698"
 
     //JEI
-    compileOnly "curse.maven:jei-238222:5846880"
-    runtimeOnly "curse.maven:jei-238222:5846880"
+    compileOnly "curse.maven:jei-238222:6617262"
+    runtimeOnly "curse.maven:jei-238222:6617262"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -163,7 +156,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.addOptional("jei") // JEI
     mainFile.addRequirement("bbl-core")
     mainFile.releaseType = "release"
-    mainFile.gameVersions.addAll("1.21", "1.21.1")
+    mainFile.gameVersions.addAll("1.21.5")
 }
 
 tasks.getByName("modrinth").setGroup("modpublishing")
@@ -175,7 +168,7 @@ modrinth {
     versionName = "bbl-flight-blocks-" + "$minecraft_version" + "-" + "$mod_version"
     uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
 
-    gameVersions.addAll("1.21", "1.21.1")
+    gameVersions.addAll("1.21.5")
 
     loaders = ["neoforge"]
     changelog = project.changelog
